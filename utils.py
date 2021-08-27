@@ -25,7 +25,26 @@ def breaker(num=50, char="*") -> None:
 def unzip(path: str) -> None:
     with zipfile.ZipFile("./FMEyes.zip", 'r') as zip_ref:
         zip_ref.extractall(path)
-    
+
+
+def read_image(name: str) -> np.ndarray:
+    image = cv2.imread(os.path.join(TEST_DATA_PATH, name), cv2.IMREAD_COLOR)
+    assert(image is not None)
+    return cv2.cvtColor(src=image, code=cv2.COLOR_BGR2RGB)
+
+
+def downscale(image: np.ndarray, size: int) -> np.ndarray:
+    return cv2.resize(src=image, dsize=(size, size), interpolation=cv2.INTER_AREA)
+
+
+def show(image: np.ndarray, title=None) -> None:
+    plt.figure()
+    plt.imshow(image)
+    plt.axis("off")
+    if title:
+        plt.title(title)
+    plt.show()
+
 
 def get_images(path: str, size: int) -> np.ndarray:
     images = np.zeros((len(os.listdir(path)), size, size, 3)).astype("uint8")
@@ -70,10 +89,8 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 FEA_TRANSFORM = transforms.Compose([transforms.ToTensor(), 
                                     transforms.Normalize(mean=[0.485, 0.456, 0.406],
                                                          std=[0.229, 0.224, 0.225])])
-LOCAL_DATA_PATH = "./FMEyes/Train"                                                       
-COLAB_DATA_PATH = "/content/FMEyes/Train"
-LOCAL_TEST_DATA_PATH = ".FMEyes/Test" 
-COLAB_TEST_DATA_PATH = "/content/FMEyes/Test"
+DATA_PATH = "./FMEyes/Train"                                                       
+TEST_DATA_PATH = "./Test" 
 CHECKPOINT_PATH = "./Checkpoints"
 if not os.path.exists(CHECKPOINT_PATH):
     os.makedirs(CHECKPOINT_PATH)

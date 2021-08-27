@@ -1,6 +1,4 @@
 import os
-import re
-import gc
 import torch
 import numpy as np
 from torch.utils.data import Dataset
@@ -32,16 +30,13 @@ class DS(Dataset):
 
 #####################################################################################################
 
-def build(path=None, batch_size=None, in_colab=False):
+def build(path=None, batch_size=None):
     assert(isinstance(path, str))
     assert(isinstance(batch_size, int))
 
     u.unzip(path)
 
-    if in_colab:
-        m_images_path, f_images_path = os.path.join(u.COLAB_DATA_PATH, "Male"), os.path.join(u.COLAB_DATA_PATH, "Female")
-    else:
-        m_images_path, f_images_path = os.path.join(u.LOCAL_DATA_PATH, "Male"), os.path.join(u.LOCAL_DATA_PATH, "Female")
+    m_images_path, f_images_path = os.path.join(u.DATA_PATH, "Male"), os.path.join(u.DATA_PATH, "Female")
     
     m_labels, f_labels = np.zeros((len(os.listdir(m_images_path)), 1)), np.ones((len(os.listdir(f_images_path)), 1))
     m_images, f_images = u.get_images(m_images_path, size=u.PRETRAINED_SIZE), u.get_images(f_images_path, size=u.PRETRAINED_SIZE)
@@ -49,6 +44,8 @@ def build(path=None, batch_size=None, in_colab=False):
     images = np.concatenate((m_images, f_images), axis=0)
 
     tr_images, va_images, tr_labels, va_labels = train_test_split(images, labels, test_size=0.2, shuffle=True, random_state=u.SEED)
+
+    del images, labels
 
     tr_data_setup = DS(X=tr_images, y=tr_labels, mode="train", transform=u.FEA_TRANSFORM)
     va_data_setup = DS(X=va_images, y=va_labels, mode="valid", transform=u.FEA_TRANSFORM)

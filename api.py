@@ -106,7 +106,7 @@ Train Accs: {:.5f} | Valid Accs: {:.5f} | Time: {:.2f} seconds".format(e+1, epoc
 
 #####################################################################################################
 
-def predict(model=None, dataloader=None):
+def predict_batch(model=None, dataloader=None):
     model.load_state_dict(torch.load(os.path.join(u.CHECKPOINT_PATH, "state.pt"))["model_state_dict"])
     model.to(u.DEVICE)
     model.eval()
@@ -126,4 +126,19 @@ def predict(model=None, dataloader=None):
     
     return y_pred
     
+#####################################################################################################
+
+def predict(model=None, image=None):
+    model.load_state_dict(torch.load(os.path.join(u.CHECKPOINT_PATH, "state.pt"))["model_state_dict"])
+    model.to(u.DEVICE)
+    model.eval()
+
+    temp_image = u.downscale(image.copy(), u.PRETRAINED_SIZE)
+    with torch.no_grad():
+        prediction = torch.sigmoid(model(u.FEA_TRANSFORM(temp_image).unsqueeze(dim=0))).item()
+    if prediction < 0.5:
+        return "Male"
+    else:
+        return "Female"
+
 #####################################################################################################

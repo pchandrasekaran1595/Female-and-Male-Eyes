@@ -3,9 +3,11 @@ import cv2
 import numpy as np
 import torch
 import zipfile
+import imgaug
 import matplotlib.pyplot as plt
 from termcolor import colored
 from torchvision import transforms
+from imgaug import augmenters
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -29,7 +31,19 @@ def unzip(path: str, full=None) -> None:
     else:
         with zipfile.ZipFile("./Train.zip", 'r') as zip_ref:
             zip_ref.extractall(path)
+        
 
+def get_augment(seed: int):
+    imgaug.seed(seed)
+    augment = augmenters.SomeOf(None, [
+        augmenters.HorizontalFlip(p=0.5),
+        augmenters.VerticalFlip(p=0.5),
+        augmenters.Affine(scale=(0.75, 1.25), translate_percent=(-0.1, 0.1), rotate=(-45, 45), seed=seed),
+    ], seed=seed)
+
+    return augment
+
+#####################################################################################################
 
 def read_image(name: str) -> np.ndarray:
     image = cv2.imread(os.path.join(TEST_DATA_PATH, name), cv2.IMREAD_COLOR)

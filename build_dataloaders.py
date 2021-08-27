@@ -30,7 +30,7 @@ class DS(Dataset):
 
 #####################################################################################################
 
-def build(path=None, batch_size=None, do_full=None):
+def build(path=None, batch_size=None, do_full=None, do_augment=None):
     assert(isinstance(path, str))
     assert(isinstance(batch_size, int))
 
@@ -47,6 +47,10 @@ def build(path=None, batch_size=None, do_full=None):
 
     del images, labels
 
+    if do_augment:
+        augment = u.get_augment(seed=u.SEED)
+        tr_images = augment(images=tr_images)
+    
     tr_data_setup = DS(X=tr_images, y=tr_labels, mode="train", transform=u.FEA_TRANSFORM)
     va_data_setup = DS(X=va_images, y=va_labels, mode="valid", transform=u.FEA_TRANSFORM)
 

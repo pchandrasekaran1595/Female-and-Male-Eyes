@@ -17,14 +17,16 @@ def app():
     args_5 = "--epochs"
     args_6 = "--early"
     args_7 = "--train-full"
-    args_8 = "--test"
-    args_9 = "--name"
+    args_8 = "--augment"
+    args_9 = "--test"
+    args_10 = "--name"
     
     do_full = None
     train_mode = True
     train_full = None
     do_scheduler = None
     scheduler = None
+    do_augment = None
     batch_size, lr, wd = 64, 1e-3, 0
     epochs = 10
     early_stopping = 5
@@ -49,12 +51,14 @@ def app():
     if args_7 in sys.argv:
         train_full = True
     if args_8 in sys.argv:
-        train_mode = False
+        do_augment = True
     if args_9 in sys.argv:
-        name = sys.argv[sys.argv.index(args_9) + 1]
+        train_mode = False
+    if args_10 in sys.argv:
+        name = sys.argv[sys.argv.index(args_10) + 1]
 
     if train_mode:
-        dataloaders = build(path="./", batch_size=batch_size, do_full=do_full)
+        dataloaders = build(path="./", batch_size=batch_size, do_full=do_full, do_augment=do_augment)
 
         torch.manual_seed(u.SEED)
         model = Models.ResNet50(train_full=train_full)
@@ -64,7 +68,6 @@ def app():
 
         L, A, _, _ = fit(model=model, optimizer=optimizer, scheduler=scheduler, epochs=epochs,
                         early_stopping_patience=early_stopping, dataloaders=dataloaders, verbose=True)
-        
         u.save_graphs(L, A)
     else:
         assert(isinstance(name, str))

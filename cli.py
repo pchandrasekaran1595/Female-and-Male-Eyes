@@ -8,6 +8,7 @@ from api import fit, predict
 #####################################################################################################
 
 def app():
+    args_0 = "--full"
     args_1 = "--bs"
     args_2 = "--lr"
     args_3 = "--wd"
@@ -18,6 +19,7 @@ def app():
     args_8 = "--test"
     args_9 = "--name"
     
+    do_full = None
     train_mode = True
     train_full = None
     do_scheduler = None
@@ -27,6 +29,8 @@ def app():
     early_stopping = 5
     name = "Test_1.jpg"
 
+    if args_0 in sys.argv:
+        do_full = True
     if args_1 in sys.argv:
         batch_size = int(sys.argv[sys.argv.index(args_1) + 1])
     if args_2 in sys.argv:
@@ -49,7 +53,7 @@ def app():
         name = sys.argv[sys.argv.index(args_9) + 1]
 
     if train_mode:
-        dataloaders = build(path="./", batch_size=batch_size)
+        dataloaders = build(path="./", batch_size=batch_size, do_full=do_full)
 
         model = Models.ResNet50(train_full=train_full)
         optimizer = model.getOptimizer(lr=lr, wd=wd)

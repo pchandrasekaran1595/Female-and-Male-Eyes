@@ -30,11 +30,11 @@ class DS(Dataset):
 
 #####################################################################################################
 
-def build(path=None, batch_size=None):
+def build(path=None, batch_size=None, do_full=None):
     assert(isinstance(path, str))
     assert(isinstance(batch_size, int))
 
-    u.unzip(path)
+    u.unzip(path, do_full)
 
     m_images_path, f_images_path = os.path.join(u.DATA_PATH, "Male"), os.path.join(u.DATA_PATH, "Female")
     

@@ -22,9 +22,13 @@ def breaker(num=50, char="*") -> None:
 
 #####################################################################################################
 
-def unzip(path: str) -> None:
-    with zipfile.ZipFile("./FMEyes.zip", 'r') as zip_ref:
-        zip_ref.extractall(path)
+def unzip(path: str, full=None) -> None:
+    if full:
+        with zipfile.ZipFile("./TrainFull.zip", 'r') as zip_ref:
+            zip_ref.extractall(path)
+    else:
+        with zipfile.ZipFile("./Train.zip", 'r') as zip_ref:
+            zip_ref.extractall(path)
 
 
 def read_image(name: str) -> np.ndarray:
@@ -89,7 +93,7 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 FEA_TRANSFORM = transforms.Compose([transforms.ToTensor(), 
                                     transforms.Normalize(mean=[0.485, 0.456, 0.406],
                                                          std=[0.229, 0.224, 0.225])])
-DATA_PATH = "./FMEyes/Train"                                                       
+DATA_PATH = "./Train"                                                       
 TEST_DATA_PATH = "./Test" 
 CHECKPOINT_PATH = "./Checkpoints"
 if not os.path.exists(CHECKPOINT_PATH):

@@ -1,4 +1,5 @@
 import sys
+import torch
 
 import utils as u
 import Models
@@ -55,6 +56,7 @@ def app():
     if train_mode:
         dataloaders = build(path="./", batch_size=batch_size, do_full=do_full)
 
+        torch.manual_seed(u.SEED)
         model = Models.ResNet50(train_full=train_full)
         optimizer = model.getOptimizer(lr=lr, wd=wd)
         if do_scheduler:

@@ -90,7 +90,7 @@ def fit(model=None, optimizer=None, scheduler=None, epochs=None, early_stopping_
             u.myprint("Epoch: {} | Train Loss: {:.5f} | Valid Loss: {:.5f} |\
 Train Accs: {:.5f} | Valid Accs: {:.5f} | Time: {:.2f} seconds".format(e+1, epochLoss["train"], epochLoss["valid"],
                                                                        epochAccs["train"], epochAccs["valid"],
-                                                                       time()-start_time), "cyan")
+                                                                       time()-e_st), "cyan")
         
     u.breaker()
     u.myprint("Best Validation Loss at Epoch {}".format(BLE), "cyan")

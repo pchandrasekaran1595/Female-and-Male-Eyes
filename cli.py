@@ -5,6 +5,8 @@ import Models
 from build_dataloaders import build
 from api import fit, predict
 
+#####################################################################################################
+
 def app():
     args_1 = "--colab"
     args_2 = "--bs"
@@ -15,6 +17,7 @@ def app():
     args_7 = "--early"
     args_8 = "--train-full"
     args_9 = "--test"
+    args_10 = "--name"
     
     train_mode = True
     train_full = None
@@ -45,7 +48,9 @@ def app():
         train_full = True
     if args_9 in sys.argv:
         train_mode = False
-    
+    if args_10 in sys.argv:
+        name = sys.argv[sys.argv.index(args_10) + 1]
+
     if train_mode:
         if in_colab:
             dataloaders = build(path="/content", batch_size=batch_size, in_colab=in_colab)
@@ -63,7 +68,5 @@ def app():
         u.save_graphs(L, A)
     else:
         raise NotImplementedError("Testing not Implemented as yet")
-    
-    
 
-    
+#####################################################################################################

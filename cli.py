@@ -32,30 +32,20 @@ def app():
     early_stopping = 5
     name = "Test_1.jpg"
 
-    if args_0 in sys.argv:
-        do_full = True
-    if args_1 in sys.argv:
-        batch_size = int(sys.argv[sys.argv.index(args_1) + 1])
-    if args_2 in sys.argv:
-        lr = float(sys.argv[sys.argv.index(args_2) + 1])
-    if args_3 in sys.argv:
-        wd = float(sys.argv[sys.argv.index(args_3) + 1])
+    if args_0 in sys.argv: do_full = True
+    if args_1 in sys.argv: batch_size = int(sys.argv[sys.argv.index(args_1) + 1])
+    if args_2 in sys.argv: lr = float(sys.argv[sys.argv.index(args_2) + 1])
+    if args_3 in sys.argv: wd = float(sys.argv[sys.argv.index(args_3) + 1])
     if args_4 in sys.argv:
         do_scheduler = True
         patience = int(sys.argv[sys.argv.index(args_4) + 1])
         eps = float(sys.argv[sys.argv.index(args_4) + 2])
-    if args_5 in sys.argv:
-        epochs = int(sys.argv[sys.argv.index(args_5) + 1])
-    if args_6 in sys.argv:
-        early_stopping = int(sys.argv[sys.argv.index(args_6) + 1])
-    if args_7 in sys.argv:
-        train_full = True
-    if args_8 in sys.argv:
-        do_augment = True
-    if args_9 in sys.argv:
-        train_mode = False
-    if args_10 in sys.argv:
-        name = sys.argv[sys.argv.index(args_10) + 1]
+    if args_5 in sys.argv: epochs = int(sys.argv[sys.argv.index(args_5) + 1])
+    if args_6 in sys.argv: early_stopping = int(sys.argv[sys.argv.index(args_6) + 1])
+    if args_7 in sys.argv: train_full = True
+    if args_8 in sys.argv: do_augment = True
+    if args_9 in sys.argv: train_mode = False
+    if args_10 in sys.argv: name = sys.argv[sys.argv.index(args_10) + 1]
 
     if train_mode:
         dataloaders = build(path="./", batch_size=batch_size, do_full=do_full, do_augment=do_augment)

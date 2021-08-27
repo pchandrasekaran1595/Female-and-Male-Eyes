@@ -135,7 +135,7 @@ def predict(model=None, image=None):
 
     temp_image = u.downscale(image.copy(), u.PRETRAINED_SIZE)
     with torch.no_grad():
-        prediction = torch.sigmoid(model(u.FEA_TRANSFORM(temp_image).unsqueeze(dim=0))).item()
+        prediction = torch.sigmoid(model(u.FEA_TRANSFORM(temp_image).to(u.u.DEVICE).unsqueeze(dim=0))).item()
     if prediction < 0.5:
         return "Male"
     else:

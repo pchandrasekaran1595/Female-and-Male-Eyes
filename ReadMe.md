@@ -1,4 +1,4 @@
-Deep Learning Model to predict gender only using images of the eyes.
+Deep Learning Analysis to identify the gender based on the eyes.
 
 ---
 
